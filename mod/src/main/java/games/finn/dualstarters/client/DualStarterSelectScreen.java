@@ -116,10 +116,15 @@ public class DualStarterSelectScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(g, mouseX, mouseY, partialTick);
+        // Dim the world behind WITHOUT the vanilla blur. The blur made the picker look
+        // smeared and unreadable over the 3D world; a flat translucent fill keeps text crisp.
+        g.fill(0, 0, this.width, this.height, 0xC00A0A12);
 
         int centerX = this.width / 2;
-        g.drawCenteredString(this.font, this.title, centerX, 24, 0xFFFFFF);
+        // Header strip behind the title so it stays legible over any background.
+        g.fill(0, 14, this.width, 38, 0xF0151521);
+        g.fill(0, 37, this.width, 38, 0xFF5A5A82);
+        g.drawCenteredString(this.font, this.title, centerX, 22, 0xFFFFFFFF);
 
         if (options.isEmpty()) {
             g.drawCenteredString(this.font, Component.literal("No starters are configured."),
@@ -148,13 +153,17 @@ public class DualStarterSelectScreen extends Screen {
     }
 
     private void drawSlot(GuiGraphics g, int x, int y, int w, Component label, Component species) {
-        // Framed panel behind the slot.
-        g.fill(x, y - 22, x + w, y + 46, 0xC0101018);
-        g.fill(x, y - 22, x + w, y - 21, 0xFF404058);
-        g.fill(x, y + 45, x + w, y + 46, 0xFF404058);
+        // Solid (opaque) framed panel so the labels read clearly over any world background.
+        int top = y - 22, bot = y + 46;
+        g.fill(x, top, x + w, bot, 0xF0151521);
+        // Bright border on all four sides (was top+bottom only, over a see-through panel).
+        g.fill(x, top, x + w, top + 1, 0xFF6A72A8);         // top
+        g.fill(x, bot - 1, x + w, bot, 0xFF6A72A8);         // bottom
+        g.fill(x, top, x + 1, bot, 0xFF6A72A8);             // left
+        g.fill(x + w - 1, top, x + w, bot, 0xFF6A72A8);     // right
         int cx = x + w / 2;
-        g.drawCenteredString(this.font, label, cx, y - 18, 0xAAB0FF);
-        g.drawCenteredString(this.font, species, cx, y + 26, 0xFFFFFF);
+        g.drawCenteredString(this.font, label, cx, y - 18, 0xFFBFC6FF);
+        g.drawCenteredString(this.font, species, cx, y + 26, 0xFFFFFFFF);
     }
 
     @Override
