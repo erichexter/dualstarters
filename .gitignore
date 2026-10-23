@@ -1,0 +1,6 @@
+# Build log from local gradlew runs
+build.log
+
+# OS cruft
+.DS_Store
+Thumbs.db
