@@ -115,7 +115,7 @@ public class DualStarterSelectScreen extends Screen {
         try {
             RenderablePokemon cur = currentPokemon();
             if (cur != null) {
-                modelWidget = new ModelWidget(modelX, modelY, 118, 96, cur, 2.0f, 0f, -8.0, true, false, 0);
+                modelWidget = new ModelWidget(modelX, modelY, 118, 96, cur, 2.0f, 0f, -8.0, true, false, 15);
                 addRenderableWidget(modelWidget);
             }
         } catch (Throwable t) {
@@ -200,14 +200,11 @@ public class DualStarterSelectScreen extends Screen {
         g.fill(panelX + 2, nameY - 1, panelX + PANEL_W - 2, nameY + 11, 0xF0152515);
         g.drawCenteredString(this.font, currentName(), panelX + PANEL_W / 2, nameY + 1, 0xFFFFFFFF);
 
-        // Two team slots.
-        int slotsY = rootY + panelH - 58;
+        // Two team slots, in the gap between the "I choose you!" row and the confirm bar.
+        int slotsY = rootY + panelH - 66;
         int sw = (PANEL_W - 22) / 2;
         drawTeamSlot(g, panelX + 6, slotsY, sw, Component.translatable("dualstarters.screen.slot1"), slot1);
         drawTeamSlot(g, panelX + 12 + sw, slotsY, sw, Component.translatable("dualstarters.screen.slot2"), slot2);
-
-        // Title centered above the panel (small).
-        g.drawCenteredString(this.font, this.title, panelX + PANEL_W / 2, rootY + panelH - 36, 0xFFBFE8C7);
 
         super.render(g, mouseX, mouseY, partialTick);
     }
@@ -219,8 +216,8 @@ public class DualStarterSelectScreen extends Screen {
     }
 
     private void drawTeamSlot(GuiGraphics g, int x, int y, int w, Component label, Pick pick) {
-        int top = y, bot = y + 30;
-        g.fill(x, top, x + w, bot, 0xFF182818);
+        int top = y, bot = y + 34;
+        g.fill(x, top, x + w, bot, pick != null ? 0xFF24402A : 0xFF1E3220);
         g.fill(x, top, x + w, top + 1, 0xFF3BA55D);
         g.fill(x, bot - 1, x + w, bot, 0xFF3BA55D);
         g.fill(x, top, x + 1, bot, 0xFF3BA55D);
