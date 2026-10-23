@@ -211,9 +211,11 @@ public class DualStarterSelectScreen extends Screen {
         g.blit(TEX_PLATFORM, modelX + 2, modelY + 70, 0, 0, 113, 32, 113, 32);
         // (ModelWidget renders itself over the viewport.)
 
-        // Species name on a strip for contrast.
-        int nameY = rootY + 2;
+        // Species name + types on a nameplate, below the pick row so Cobblemon's starter
+        // toast (top-right) never covers it, and below the 3D model (which draws on top).
+        int nameY = rootY + 138;
         g.fill(panelX + 1, nameY - 1, panelX + PANEL_W - 1, nameY + 11, 0xFF0C1E0E);
+        g.fill(panelX + 1, nameY - 1, panelX + PANEL_W - 1, nameY, 0xFF3BA55D);
         g.drawCenteredString(this.font, currentHeader(), panelX + PANEL_W / 2, nameY + 1, 0xFFFFFFFF);
 
         // Two team slots, in the gap between the "I choose you!" row and the confirm bar.
