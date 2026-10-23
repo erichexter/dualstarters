@@ -1,6 +1,9 @@
 # Build log from local gradlew runs
 build.log
 
+# Temp dir used to inspect Cobblemon textures
+.cbtex/
+
 # OS cruft
 .DS_Store
 Thumbs.db
