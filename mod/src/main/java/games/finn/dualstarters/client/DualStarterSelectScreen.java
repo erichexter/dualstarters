@@ -3,9 +3,11 @@ package games.finn.dualstarters.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cobblemon.mod.common.api.types.ElementalType;
 import com.cobblemon.mod.common.client.gui.summary.widgets.ModelWidget;
 import com.cobblemon.mod.common.config.starter.RenderableStarterCategory;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
+import com.cobblemon.mod.common.pokemon.Species;
 
 import games.finn.dualstarters.net.DualSelectStartersPacket;
 import net.minecraft.client.gui.GuiGraphics;
@@ -78,6 +80,20 @@ public class DualStarterSelectScreen extends Screen {
     private Component currentName() {
         RenderablePokemon p = currentPokemon();
         return p != null ? p.getSpecies().getTranslatedName() : Component.literal("-");
+    }
+
+    /** "Bulbasaur  Grass/Poison" for the panel header. */
+    private Component currentHeader() {
+        RenderablePokemon p = currentPokemon();
+        if (p == null) return Component.literal("-");
+        Species sp = p.getSpecies();
+        Component types = sp.getPrimaryType().getDisplayName();
+        ElementalType t2 = sp.getSecondaryType();
+        if (t2 != null) {
+            types = Component.empty().append(types).append(Component.literal("/")).append(t2.getDisplayName());
+        }
+        return Component.empty().append(sp.getTranslatedName())
+                .append(Component.literal("  ")).append(types);
     }
 
     @Override
@@ -197,8 +213,8 @@ public class DualStarterSelectScreen extends Screen {
 
         // Species name on a strip for contrast.
         int nameY = rootY + 2;
-        g.fill(panelX + 2, nameY - 1, panelX + PANEL_W - 2, nameY + 11, 0xF0152515);
-        g.drawCenteredString(this.font, currentName(), panelX + PANEL_W / 2, nameY + 1, 0xFFFFFFFF);
+        g.fill(panelX + 1, nameY - 1, panelX + PANEL_W - 1, nameY + 11, 0xFF0C1E0E);
+        g.drawCenteredString(this.font, currentHeader(), panelX + PANEL_W / 2, nameY + 1, 0xFFFFFFFF);
 
         // Two team slots, in the gap between the "I choose you!" row and the confirm bar.
         int slotsY = rootY + panelH - 66;
@@ -223,9 +239,9 @@ public class DualStarterSelectScreen extends Screen {
         g.fill(x, top, x + 1, bot, 0xFF3BA55D);
         g.fill(x + w - 1, top, x + w, bot, 0xFF3BA55D);
         int cx = x + w / 2;
-        g.drawCenteredString(this.font, label, cx, top + 3, 0xFFBFE8C7);
+        g.drawCenteredString(this.font, label, cx, top + 3, 0xFFE0FFE6);
         Component val = pick != null ? pick.displayName() : Component.literal("- empty -");
-        g.drawCenteredString(this.font, val, cx, top + 16, pick != null ? 0xFFFFFFFF : 0xFF808080);
+        g.drawCenteredString(this.font, val, cx, top + 16, pick != null ? 0xFFFFFFFF : 0xFFA8A8A8);
     }
 
     @Override
