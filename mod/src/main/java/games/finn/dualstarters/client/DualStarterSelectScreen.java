@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cobblemon.mod.common.api.types.ElementalType;
+import com.cobblemon.mod.common.client.gui.TypeIcon;
 import com.cobblemon.mod.common.client.gui.summary.widgets.ModelWidget;
 import com.cobblemon.mod.common.config.starter.RenderableStarterCategory;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
@@ -216,7 +217,16 @@ public class DualStarterSelectScreen extends Screen {
         int nameY = rootY + 138;
         g.fill(panelX + 1, nameY - 1, panelX + PANEL_W - 1, nameY + 11, 0xFF0C1E0E);
         g.fill(panelX + 1, nameY - 1, panelX + PANEL_W - 1, nameY, 0xFF3BA55D);
-        g.drawCenteredString(this.font, currentHeader(), panelX + PANEL_W / 2, nameY + 1, 0xFFFFFFFF);
+        // Name on the left, Cobblemon type badge(s) on the right of the nameplate.
+        g.drawString(this.font, currentName(), panelX + 6, nameY + 2, 0xFFFFFFFF);
+        RenderablePokemon cp = currentPokemon();
+        if (cp != null) {
+            try {
+                Species sp = cp.getSpecies();
+                new TypeIcon(panelX + PANEL_W - 34, nameY + 1, sp.getPrimaryType(), sp.getSecondaryType(),
+                        false, true, 15F, 7.5F, 1F).render(g);
+            } catch (Throwable ignored) {}
+        }
 
         // Two team slots, in the gap between the "I choose you!" row and the confirm bar.
         int slotsY = rootY + panelH - 66;
